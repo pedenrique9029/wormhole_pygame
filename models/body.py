@@ -14,38 +14,38 @@ class Body:
         self.screen_height = ALTURA
         self.no_chao = False
 
-    def update_fisica(self, plataformas):
+    def update_fisica(self, colisores):
         # Aplica gravidade
         self.vel_y = min(self.vel_y + GRAVIDADE, VEL_MAX_CAIDA)
 
         # Movimento horizontal
         self.rect.x += self.vel_x
-        self._check_horizontal_collision(plataformas)
+        self._check_horizontal_collision(colisores)
         self._check_screen_bounds_horizontal()
 
         # Movimento vertical
         self.rect.y += self.vel_y
-        self._check_vertical_collision(plataformas)
+        self._check_vertical_collision(colisores)
         self._check_screen_bounds_vertical()
 
-    def _check_horizontal_collision(self, plataformas):
-        for plataforma in plataformas:
-            if self.rect.colliderect(plataforma):
+    def _check_horizontal_collision(self, colisores):
+        for colisor in colisores:
+            if self.rect.colliderect(colisor):
                 if self.vel_x > 0:  # Movendo para direita
-                    self.rect.right = plataforma.left
+                    self.rect.right = colisor.left
                 elif self.vel_x < 0:  # Movendo para esquerda
-                    self.rect.left = plataforma.right
+                    self.rect.left = colisor.right
                 self.vel_x = 0  # Para o movimento horizontal ao colidir
 
-    def _check_vertical_collision(self, plataformas):
+    def _check_vertical_collision(self, colisores):
         self.no_chao = False
-        for plataforma in plataformas:
-            if self.rect.colliderect(plataforma):
+        for colisor in colisores:
+            if self.rect.colliderect(colisor):
                 if self.vel_y > 0:  # Caindo
-                    self.rect.bottom = plataforma.top
+                    self.rect.bottom = colisor.top
                     self.no_chao = True
                 elif self.vel_y < 0:  # Subindo (colidiu com teto)
-                    self.rect.top = plataforma.bottom
+                    self.rect.top = colisor.bottom
                 self.vel_y = 0  # Reseta a velocidade ao tocar algo
 
     def _check_screen_bounds_horizontal(self):
