@@ -9,7 +9,10 @@ class Fase2(Fase):
         self.altura = altura
         self.next_level = "fase3"
         self.message = "Ative o portal por meio do botão"
-        self.background_color = (200,50,250)
+
+        # Ajuste da Paleta de cores
+        self.background_color = (20, 100, 80)
+        self.bloco_color = (150, 20, 120)
 
         # Ajuste de posições iniciais específicas para esta fase
         self.portal.rect.x=1250

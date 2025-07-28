@@ -12,6 +12,10 @@ class Fase1(Fase):
         self.largura = largura
         self.altura = altura
 
+        #Ajuste da Paleta de cores
+        self.background_color = (20,50,100)
+        self.bloco_color = (250,150,20)
+
         # Ajuste de posições iniciais específicas para esta fase
         self.portal.rect.x = 1250
         self.portal.rect.y = 288

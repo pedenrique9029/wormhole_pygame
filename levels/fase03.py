@@ -9,7 +9,10 @@ class Fase3(Fase):
         self.altura = altura
         self.next_level = "menu"
         self.message = ""
-        self.background_color = (100,20,250)
+
+        # Ajuste da Paleta de cores
+        self.background_color = (80,50,160)
+        self.bloco_color = (200,180,50)
 
         # Ajuste de posições iniciais específicas para esta fase
         self.portal.rect.x=1250

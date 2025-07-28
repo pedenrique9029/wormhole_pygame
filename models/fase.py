@@ -11,7 +11,10 @@ class Fase:
         self.concluded = False
         self.next_level = "menu"
         self.message =""
+
+        #As cores são inicializadas aqui e alteradas em cada subclasse conforme escolhido para cada fase
         self.background_color = (0,0,0)
+        self.bloco_color=(255,255,255)
 
         # Sprites
         self.background = pygame.rect.Rect(0,0,LARGURA,ALTURA)
@@ -103,14 +106,8 @@ class Fase:
         # Desenhar objetos
         tela.blit(messagem, (LARGURA/2-messagem.get_width()/2,100))
         tela.blit(self.player.texture, (self.player.rect.left, self.player.rect.top))
-        pygame.draw.rect(tela,(255,0,50),self.bloco.rect,)
+        pygame.draw.rect(tela,self.bloco_color,self.bloco.rect)
         pygame.draw.rect(tela, (5, 200, 50), self.portal.rect)
-
-        #tela.blit(self.bloco.texture, (self.bloco.rect.left, self.bloco.rect.top))
-
-        #desenhar colisões (para debug)
-        for colisor in self.collision_rects:
-            pygame.draw.rect(tela, (0, 255, 0), colisor, 1)
 
     def executar(self, tela):
         clock = pygame.time.Clock()
