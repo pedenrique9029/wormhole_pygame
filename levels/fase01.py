@@ -8,13 +8,14 @@ class Fase1(Fase):
     def __init__(self, largura, altura):
         super().__init__("assets/Mapa/mapa01.tmx")
         self.next_level="fase2"
+        self.message = 'Pressione "J" para trocar de posição com bloco'
         self.largura = largura
         self.altura = altura
 
         # Ajuste de posições iniciais específicas para esta fase
-        self.portal.rect.x = 780
-        self.portal.rect.y = 320
+        self.portal.rect.x = 1250
+        self.portal.rect.y = 288
         self.player.rect.x = 300
-        self.player.rect.y = 300
-        self.bloco.rect.x = 100
-        self.bloco.rect.y = 400
+        self.player.rect.y = 800
+        self.bloco.rect.x = 200
+        self.bloco.rect.y = 800

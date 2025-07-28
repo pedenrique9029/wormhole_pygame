@@ -10,8 +10,11 @@ class Fase:
         self.collision_rects = self.carregar_colisoes()
         self.concluded = False
         self.next_level = "menu"
+        self.message =""
+        self.background_color = (0,0,0)
 
         # Sprites
+        self.background = pygame.rect.Rect(0,0,LARGURA,ALTURA)
         sprite_sheet_img = pygame.image.load("assets/Virtual Guy/Idle (32x32).png").convert_alpha()
         sprite_sheet = spritesheet.SpriteSheet(sprite_sheet_img)
         self.frame_0 = sprite_sheet.get_image(0, 32, 32, 2, False)
@@ -85,7 +88,10 @@ class Fase:
 
     def desenhar(self, tela):
         tela.fill(self.cor_fundo)
+        messagem =pygame.font.SysFont(None, 48).render(self.message, True, (255, 255, 255))
 
+        #Desenha fundo
+        pygame.draw.rect(tela,self.background_color,self.background)
         # Desenhar mapa (igual ao seu código)
         for layer in self.tmx_data.visible_layers:
             if isinstance(layer, pytmx.TiledTileLayer):
@@ -95,6 +101,7 @@ class Fase:
                         tela.blit(tile, (x * self.tmx_data.tilewidth, y * self.tmx_data.tileheight))
 
         # Desenhar objetos
+        tela.blit(messagem, (LARGURA/2-messagem.get_width()/2,100))
         tela.blit(self.player.texture, (self.player.rect.left, self.player.rect.top))
         pygame.draw.rect(tela,(255,0,50),self.bloco.rect,)
         pygame.draw.rect(tela, (5, 200, 50), self.portal.rect)
