@@ -8,6 +8,8 @@ class Fase:
     def __init__(self, arquivo_mapa):
         self.tmx_data = pytmx.load_pygame(arquivo_mapa)
         self.collision_rects = self.carregar_colisoes()
+        self.concluded = False
+        self.next_level = "menu"
 
         # Sprites
         sprite_sheet_img = pygame.image.load("assets/Virtual Guy/Idle (32x32).png").convert_alpha()
@@ -15,12 +17,13 @@ class Fase:
         self.frame_0 = sprite_sheet.get_image(0, 32, 32, 2, False)
         self.frame_0_flipado = sprite_sheet.get_image(0, 32, 32, 2, True)
 
-        # Inicializa objetos (posições podem ser ajustadas por fase)
+        # Inicializa objetos
         self.bloco = body.Body(pygame.rect.Rect(100,100,50,50), 100, 400, 64, 64, self.collision_rects)
         self.player = player.Player(self.frame_0, 300, 300, self.collision_rects)
+        self.portal = body.Body(pygame.rect.Rect(100,100,50,70), 100, 400, 64, 64, self.player)
 
         self.rodando = True
-        self.cor_fundo = (255, 255, 255)  # BRANCO
+        self.cor_fundo = (255, 255, 255)
 
     def carregar_colisoes(self):
         colisoes = []
@@ -39,6 +42,8 @@ class Fase:
         return colisoes
 
     def processar_eventos(self):
+        if self.player.rect.colliderect(self.portal.rect):
+            return "next"
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 self.rodando = False
@@ -92,6 +97,8 @@ class Fase:
         # Desenhar objetos
         tela.blit(self.player.texture, (self.player.rect.left, self.player.rect.top))
         pygame.draw.rect(tela,(255,0,50),self.bloco.rect,)
+        pygame.draw.rect(tela, (5, 200, 50), self.portal.rect)
+
         #tela.blit(self.bloco.texture, (self.bloco.rect.left, self.bloco.rect.top))
 
         #desenhar colisões (para debug)
@@ -100,14 +107,15 @@ class Fase:
 
     def executar(self, tela):
         clock = pygame.time.Clock()
-        self.rodando = True
 
-        while self.rodando:
+        while not self.concluded:
             resultado = self.processar_eventos()
-            if resultado:
+            if resultado == "menu" or resultado == "sair":
                 return resultado
+            elif resultado == "next":
+                return self.next_level
 
             self.atualizar()
             self.desenhar(tela)
-            pygame.display.update()
+            pygame.display.flip()
             clock.tick(60)
