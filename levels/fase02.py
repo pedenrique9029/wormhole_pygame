@@ -7,7 +7,7 @@ class Fase2(Fase):
         super().__init__("assets/Mapa/mapa02.tmx")
         self.largura = largura
         self.altura = altura
-        self.next_level = "fase1"
+        self.next_level = "fase3"
         self.message = "Ative o portal por meio do botão"
         self.background_color = (200,50,250)
 
