@@ -125,7 +125,7 @@ class Fase:
             self.player.vel_x = 0
 
     def desenhar(self, tela):
-        tela.blit(self.cenario_fundo, (0,0))
+        tela.blit(self.cenario_fundo, (0,-80))
         messagem = pygame.font.SysFont(None, 48).render(self.message, True, (255, 255, 255))
 
         # Desenhar mapa (igual ao seu código)
