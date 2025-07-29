@@ -8,7 +8,8 @@ class Fim:
         self.rodando = True
 
     def desenhar(self, tela):
-        tela.fill((0, 0, 0))  # Fundo preto
+        imagem_fundo = pygame.image.load('assets/imagem_fim_editada.jpg')  # Imagem de fundo
+        tela.blit(imagem_fundo, (-170, -100))
 
         texto = self.fonte.render("Parabéns! Você conseguiu!", True, (255, 255, 255))
         tela.blit(texto, (self.largura // 2 - texto.get_width() // 2, 300))
