@@ -12,6 +12,10 @@ class Fase:
         self.next_level = "menu"
         self.message =""
 
+        # Carrega efeito sonoro de teleporte
+        self.teleport_sound = pygame.mixer.Sound("assets/sounds/teleport_sound_effect.mp3")
+        self.teleport_sound.set_volume(0.3)
+
         #As cores são inicializadas aqui e alteradas em cada subclasse conforme escolhido para cada fase
         self.background_color = (0, 0, 0)
         self.bloco_color = (255, 255, 255)
@@ -107,8 +111,8 @@ class Fase:
 
         # Teleporte
         if self.player.teleportando:
-            self.player.rect.left, self.player.rect.top, self.bloco.rect.left, self.bloco.rect.top = \
-                self.bloco.rect.left, self.bloco.rect.top, self.player.rect.left, self.player.rect.top
+            self.teleport_sound.play()
+            self.player.rect.left, self.player.rect.top, self.bloco.rect.left, self.bloco.rect.top = self.bloco.rect.left, self.bloco.rect.top, self.player.rect.left, self.player.rect.top
             self.player.teleportando = False
 
         # Atualizar física
@@ -132,20 +136,19 @@ class Fase:
                     if tile:
                         tela.blit(tile, (x * self.tmx_data.tilewidth, y * self.tmx_data.tileheight))
 
-        # Desenhar objetos
+    # Desenhar objetos
         if self.message:
             #Desenha somente se houver uma messagem
             tela.blit(messagem, (LARGURA/2-messagem.get_width()/2,100))
         if self.botao.visible:
             #Desenha o botão quando visível
             tela.blit(self.botao.texture, (self.botao.rect.left, self.botao.rect.top))
-            pygame.draw.rect(tela, self.botao_color, self.botao.rect)
         # Desenha o player
         tela.blit(self.player.texture, (self.player.rect.left, self.player.rect.top))
-        pygame.draw.rect(tela,self.bloco_color,self.bloco.rect)
+        #Desenha o Bloco
+        pygame.draw.rect(tela,self.bloco_color,self.bloco.rect, border_radius=7)
         if self.portal.visible:
-            #Desenha o portão quando visível
-            #pygame.draw.rect(tela, (5, 200, 50), self.portal.rect)
+            #Desenha o portal quando visível
             tela.blit(self.texture_portal, (self.portal.rect.left, self.portal.rect.top))
 
 

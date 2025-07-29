@@ -7,10 +7,17 @@ from fim import Fim
 from settings import LARGURA, ALTURA
 import gerenciador_estados
 
+# Inicializa a tela
 pygame.init()
 tela = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption("Wormhole")
 clock = pygame.time.Clock()
+
+# Carrega a trilha sonora
+pygame.mixer.init()
+pygame.mixer.music.load("assets/sounds/soundtrack.mp3")
+pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.play(-1)
 
 # Estados do jogo
 gerenciador_estados.estados = {
