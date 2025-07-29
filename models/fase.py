@@ -29,11 +29,17 @@ class Fase:
         portal_sprite_sheet = spritesheet.SpriteSheet(portal_spritesheet_img)
         self.texture_portal = portal_sprite_sheet.get_image(0, 32, 32, 2, False)
 
+        #Sprite Botão
+        botao_spritesheet_img = pygame.image.load("assets/botao.png").convert_alpha()
+        botao_sprite_sheet = spritesheet.SpriteSheet(botao_spritesheet_img)
+        self.botao_frame_0 = botao_sprite_sheet.get_image(0, 16, 16, 4, False)
+        self.botao_frame_clickado = botao_sprite_sheet.get_image(1, 16, 16, 4, False)
+
         # Inicializa objetos
         self.bloco = body.Body(pygame.rect.Rect(100,100,50,50), 100, 400, 64, 64, self.collision_rects,True)
         self.player = player.Player(self.frame_0, 300, 300, self.collision_rects)
         self.portal = body.Body(pygame.rect.Rect(100,100,50,70), 1235, 400, 64, 64, [self.player],True)
-        self.botao = body.Body(pygame.rect.Rect(100,100,30,10),100,400, 64,16, [self.player,self.bloco],False)
+        self.botao = body.Body(self.botao_frame_0,100,400, 64,32, [self.player,self.bloco],False)
 
         self.rodando = True
         self.cor_fundo = (255, 255, 255)
@@ -63,11 +69,13 @@ class Fase:
         # (quando desejar que a fase não tenha tal mecanismo basta passar visible como False)
         if self.botao.visible:
             if self.botao.rect.colliderect(self.player) or self.botao.rect.colliderect(self.bloco):
+                self.botao.texture = self.botao_frame_clickado
                 # Torna o portal visivel caso não esteja
                 if not self.portal.visible:
                     self.botao_color = (0,255,50)
                     self.portal.visible = True
             else:
+                self.botao.texture = self.botao_frame_0
                 self.botao_color = (150,150,150)
                 self.portal.visible = False
 
@@ -125,10 +133,14 @@ class Fase:
                         tela.blit(tile, (x * self.tmx_data.tilewidth, y * self.tmx_data.tileheight))
 
         # Desenhar objetos
-        tela.blit(messagem, (LARGURA/2-messagem.get_width()/2,100))
+        if self.message:
+            #Desenha somente se houver uma messagem
+            tela.blit(messagem, (LARGURA/2-messagem.get_width()/2,100))
         if self.botao.visible:
             #Desenha o botão quando visível
+            tela.blit(self.botao.texture, (self.botao.rect.left, self.botao.rect.top))
             pygame.draw.rect(tela, self.botao_color, self.botao.rect)
+        # Desenha o player
         tela.blit(self.player.texture, (self.player.rect.left, self.player.rect.top))
         pygame.draw.rect(tela,self.bloco_color,self.bloco.rect)
         if self.portal.visible:

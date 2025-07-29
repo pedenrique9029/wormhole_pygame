@@ -15,7 +15,7 @@ class Fase2(Fase):
         self.bloco_color = (150, 20, 120)
 
         #Necessário ativar o portal para avançar
-        self.botao.visible=True
+        self.botao.visible = True
 
         # Ajuste de posições iniciais específicas para esta fase
         self.portal.rect.y=528
@@ -24,4 +24,4 @@ class Fase2(Fase):
         self.bloco.rect.x = 10
         self.bloco.rect.y = 416
         self.botao.rect.x = 810
-        self.botao.rect.y = 546
+        self.botao.rect.y = 496

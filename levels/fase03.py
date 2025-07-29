@@ -23,4 +23,4 @@ class Fase3(Fase):
         self.bloco.rect.x = 10
         self.bloco.rect.y = 320
         self.botao.rect.x = 552
-        self.botao.rect.y = 624
+        self.botao.rect.y = 576
