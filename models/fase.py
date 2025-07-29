@@ -5,12 +5,15 @@ from settings import LARGURA, ALTURA, VEL_PULO, VEL_PLAYER
 
 
 class Fase:
-    def __init__(self, arquivo_mapa):
+    def __init__(self, arquivo_mapa, imagem_fundo):
         self.tmx_data = pytmx.load_pygame(arquivo_mapa)
         self.collision_rects = self.carregar_colisoes()
         self.concluded = False
         self.next_level = "menu"
         self.message =""
+
+        self.cenario_fundo = pygame.image.load(imagem_fundo)
+
 
         # Carrega efeito sonoro de teleporte
         self.teleport_sound = pygame.mixer.Sound("assets/sounds/teleport_sound_effect.mp3")
@@ -46,7 +49,6 @@ class Fase:
         self.botao = body.Body(self.botao_frame_0,100,400, 64,32, [self.player,self.bloco],False)
 
         self.rodando = True
-        self.cor_fundo = (255, 255, 255)
 
     def carregar_colisoes(self):
         colisoes = []
@@ -123,11 +125,9 @@ class Fase:
             self.player.vel_x = 0
 
     def desenhar(self, tela):
-        tela.fill(self.cor_fundo)
+        tela.blit(self.cenario_fundo, (0,0))
         messagem = pygame.font.SysFont(None, 48).render(self.message, True, (255, 255, 255))
 
-        # Desenha fundo
-        pygame.draw.rect(tela,self.background_color,self.background)
         # Desenhar mapa (igual ao seu código)
         for layer in self.tmx_data.visible_layers:
             if isinstance(layer, pytmx.TiledTileLayer):

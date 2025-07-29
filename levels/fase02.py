@@ -4,7 +4,7 @@ from models.fase import Fase
 
 class Fase2(Fase):
     def __init__(self, largura, altura):
-        super().__init__("assets/Mapa/mapa02.tmx")
+        super().__init__("assets/Mapa/mapa02.tmx", "assets/imagem_fim_editada.jpg")
         self.largura = largura
         self.altura = altura
         self.next_level = "fase3"
