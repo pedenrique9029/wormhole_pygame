@@ -4,7 +4,7 @@ from settings import LARGURA, VEL_PULO
 
 class Player(Body):
     def __init__(self, texture, x, y, colisores):
-        super().__init__(texture, x, y, 64, 64, colisores)
+        super().__init__(texture, x, y, 64, 64, colisores,True)
         self.pulando = False
         self.teleportando = False
 

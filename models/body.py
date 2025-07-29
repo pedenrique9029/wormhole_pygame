@@ -4,7 +4,7 @@ from settings import LARGURA,ALTURA
 
 
 class Body:
-    def __init__(self, texture, x, y, width, height, colisores):
+    def __init__(self, texture, x, y, width, height, colisores:list, visible):
         self.rect = pygame.Rect(x, y, width, height)
         self.vel_x = 0
         self.vel_y = 0
@@ -13,6 +13,7 @@ class Body:
         self.screen_width = LARGURA
         self.screen_height = ALTURA
         self.no_chao = False
+        self.visible =  visible
 
     def update_fisica(self, colisores):
         # Aplica gravidade

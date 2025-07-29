@@ -8,16 +8,20 @@ class Fase3(Fase):
         self.largura = largura
         self.altura = altura
         self.next_level = "menu"
-        self.message = ""
 
         # Ajuste da Paleta de cores
         self.background_color = (80,50,160)
         self.bloco_color = (200,180,50)
 
+        # Necessário ativar o portal para avançar
+        self.botao.visible = True
+
         # Ajuste de posições iniciais específicas para esta fase
-        self.portal.rect.x=1250
-        self.portal.rect.y=560
+        self.portal.rect.x = 1250
+        self.portal.rect.y = 416
         self.player.rect.x = 512
-        self.player.rect.y = 560
+        self.player.rect.y = 304
         self.bloco.rect.x = 10
-        self.bloco.rect.y = 304
+        self.bloco.rect.y = 320
+        self.botao.rect.x = 552
+        self.botao.rect.y = 624

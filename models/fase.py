@@ -13,8 +13,9 @@ class Fase:
         self.message =""
 
         #As cores são inicializadas aqui e alteradas em cada subclasse conforme escolhido para cada fase
-        self.background_color = (0,0,0)
-        self.bloco_color=(255,255,255)
+        self.background_color = (0, 0, 0)
+        self.bloco_color = (255, 255, 255)
+        self.botao_color = (150, 150, 150)
 
         # Sprites
         self.background = pygame.rect.Rect(0,0,LARGURA,ALTURA)
@@ -24,9 +25,10 @@ class Fase:
         self.frame_0_flipado = sprite_sheet.get_image(0, 32, 32, 2, True)
 
         # Inicializa objetos
-        self.bloco = body.Body(pygame.rect.Rect(100,100,50,50), 100, 400, 64, 64, self.collision_rects)
+        self.bloco = body.Body(pygame.rect.Rect(100,100,50,50), 100, 400, 64, 64, self.collision_rects,True)
         self.player = player.Player(self.frame_0, 300, 300, self.collision_rects)
-        self.portal = body.Body(pygame.rect.Rect(100,100,50,70), 100, 400, 64, 64, self.player)
+        self.portal = body.Body(pygame.rect.Rect(100,100,50,70), 100, 400, 64, 64, [self.player],True)
+        self.botao = body.Body(pygame.rect.Rect(100,100,30,10),100,400, 64,16, [self.player,self.bloco],False)
 
         self.rodando = True
         self.cor_fundo = (255, 255, 255)
@@ -48,8 +50,22 @@ class Fase:
         return colisoes
 
     def processar_eventos(self):
-        if self.player.rect.colliderect(self.portal.rect):
+        #O portal tem que estar visível para ser utilizado
+        if self.player.rect.colliderect(self.portal.rect) and self.portal.visible:
             return "next"
+
+        # Verifica se há botão visível na fase
+        # (quando desejar que a fase não tenha tal mecanismo basta passar visible como False)
+        if self.botao.visible:
+            if self.botao.rect.colliderect(self.player) or self.botao.rect.colliderect(self.bloco):
+                # Torna o portal visivel caso não esteja
+                if not self.portal.visible:
+                    self.botao_color = (0,255,50)
+                    self.portal.visible = True
+            else:
+                self.botao_color = (150,150,150)
+                self.portal.visible = False
+
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 self.rodando = False
@@ -91,9 +107,9 @@ class Fase:
 
     def desenhar(self, tela):
         tela.fill(self.cor_fundo)
-        messagem =pygame.font.SysFont(None, 48).render(self.message, True, (255, 255, 255))
+        messagem = pygame.font.SysFont(None, 48).render(self.message, True, (255, 255, 255))
 
-        #Desenha fundo
+        # Desenha fundo
         pygame.draw.rect(tela,self.background_color,self.background)
         # Desenhar mapa (igual ao seu código)
         for layer in self.tmx_data.visible_layers:
@@ -105,9 +121,15 @@ class Fase:
 
         # Desenhar objetos
         tela.blit(messagem, (LARGURA/2-messagem.get_width()/2,100))
+        if self.botao.visible:
+            #Desenha o botão quando visível
+            pygame.draw.rect(tela, self.botao_color, self.botao.rect)
         tela.blit(self.player.texture, (self.player.rect.left, self.player.rect.top))
         pygame.draw.rect(tela,self.bloco_color,self.bloco.rect)
-        pygame.draw.rect(tela, (5, 200, 50), self.portal.rect)
+        if self.portal.visible:
+            #Desenha o portão quando visível
+            pygame.draw.rect(tela, (5, 200, 50), self.portal.rect)
+
 
     def executar(self, tela):
         clock = pygame.time.Clock()
