@@ -8,17 +8,18 @@ class Menu:
         self.altura = altura
         self.fonte = pygame.font.SysFont(None, 48)
         self.fonte_pequena = pygame.font.SysFont(None, 36)
-        self.rect_start = pygame.rect.Rect(LARGURA/2-100, ALTURA/2+5, 200, 50)
-        self.rect_quit = pygame.rect.Rect(LARGURA/2-50, ALTURA/2+65, 100, 30)
+        self.rect_start = pygame.rect.Rect(LARGURA/2-100, ALTURA/2-20, 200, 50)
+        self.rect_quit = pygame.rect.Rect(LARGURA/2-50, ALTURA/2+67, 100, 30)
 
     def desenhar(self, tela):
-        tela.fill((0, 0, 0))  # Fundo preto
-
+        imagem_fundo  = pygame.image.load('assets/buraco_negro_pixelizado_espelhado.jpg')# Imagem de fundo
+        imagem_fundo = pygame.transform.rotate(imagem_fundo, 90)
+        tela.blit(imagem_fundo, (-120, -60))
         titulo = self.fonte.render("WORMHOLE", True, (255, 255, 255))
-        tela.blit(titulo, (self.largura // 2 - titulo.get_width() // 2, 100))
+        tela.blit(titulo, (self.largura // 2 - titulo.get_width() // 2, 220))
 
-        pygame.draw.rect(tela, (0, 150, 100), self.rect_start)
-        pygame.draw.rect(tela, (150, 0, 0), self.rect_quit)
+        pygame.draw.rect(tela, (0, 0, 0), self.rect_start)
+        pygame.draw.rect(tela, (0, 0, 0), self.rect_quit)
         # Opções
         opcoes = [
             "Start/Resume",
@@ -27,7 +28,7 @@ class Menu:
 
         for i, opcao in enumerate(opcoes):
             texto = self.fonte_pequena.render(opcao, True, (255, 255, 255))
-            tela.blit(texto, (self.largura // 2 - texto.get_width() // 2, 375 + i * 50))
+            tela.blit(texto, (self.largura // 2 - texto.get_width() // 2, 350 + i * 80))
 
     def processar_eventos(self):
         for evento in pygame.event.get():
