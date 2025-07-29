@@ -3,6 +3,7 @@ from menu import Menu
 from levels.fase01 import Fase1
 from levels.fase02 import Fase2
 from levels.fase03 import Fase3
+from fim import Fim
 from settings import LARGURA, ALTURA
 import gerenciador_estados
 
@@ -17,6 +18,7 @@ gerenciador_estados.estados = {
     "fase1": Fase1(LARGURA, ALTURA),
     "fase2": Fase2(LARGURA, ALTURA),
     "fase3": Fase3(LARGURA, ALTURA),
+    "fim": Fim(LARGURA, ALTURA),
 }
 rodando = True
 while rodando:

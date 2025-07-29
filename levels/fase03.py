@@ -7,7 +7,7 @@ class Fase3(Fase):
         super().__init__("assets/Mapa/mapa03.tmx")
         self.largura = largura
         self.altura = altura
-        self.next_level = "menu"
+        self.next_level = "fim"
 
         # Ajuste da Paleta de cores
         self.background_color = (80,50,160)
