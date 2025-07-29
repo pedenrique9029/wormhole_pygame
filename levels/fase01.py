@@ -16,8 +16,7 @@ class Fase1(Fase):
         self.background_color = (20,50,100)
         self.bloco_color = (250,150,20)
 
-        # Ajuste de posições iniciais específicas para esta fase
-        self.portal.rect.x = 1250
+        # Ajuste de posições iniciais específicas para esta fas
         self.portal.rect.y = 288
         self.player.rect.x = 300
         self.player.rect.y = 800

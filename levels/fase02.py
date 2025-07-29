@@ -18,7 +18,6 @@ class Fase2(Fase):
         self.botao.visible=True
 
         # Ajuste de posições iniciais específicas para esta fase
-        self.portal.rect.x=1250
         self.portal.rect.y=528
         self.player.rect.x = 300
         self.player.rect.y = 576

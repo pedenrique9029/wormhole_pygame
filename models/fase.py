@@ -17,17 +17,22 @@ class Fase:
         self.bloco_color = (255, 255, 255)
         self.botao_color = (150, 150, 150)
 
-        # Sprites
+        # Sprite Player
         self.background = pygame.rect.Rect(0,0,LARGURA,ALTURA)
-        sprite_sheet_img = pygame.image.load("assets/Virtual Guy/Idle (32x32).png").convert_alpha()
-        sprite_sheet = spritesheet.SpriteSheet(sprite_sheet_img)
-        self.frame_0 = sprite_sheet.get_image(0, 32, 32, 2, False)
-        self.frame_0_flipado = sprite_sheet.get_image(0, 32, 32, 2, True)
+        player_spritesheet_img = pygame.image.load("assets/Virtual Guy/Idle (32x32).png").convert_alpha()
+        player_sprite_sheet = spritesheet.SpriteSheet(player_spritesheet_img)
+        self.frame_0 = player_sprite_sheet.get_image(0, 32, 32, 2, False)
+        self.frame_0_flipado = player_sprite_sheet.get_image(0, 32, 32, 2, True)
+
+        #Sprite Portal
+        portal_spritesheet_img = pygame.image.load("assets/portal.png").convert_alpha()
+        portal_sprite_sheet = spritesheet.SpriteSheet(portal_spritesheet_img)
+        self.texture_portal = portal_sprite_sheet.get_image(0, 32, 32, 2, False)
 
         # Inicializa objetos
         self.bloco = body.Body(pygame.rect.Rect(100,100,50,50), 100, 400, 64, 64, self.collision_rects,True)
         self.player = player.Player(self.frame_0, 300, 300, self.collision_rects)
-        self.portal = body.Body(pygame.rect.Rect(100,100,50,70), 100, 400, 64, 64, [self.player],True)
+        self.portal = body.Body(pygame.rect.Rect(100,100,50,70), 1235, 400, 64, 64, [self.player],True)
         self.botao = body.Body(pygame.rect.Rect(100,100,30,10),100,400, 64,16, [self.player,self.bloco],False)
 
         self.rodando = True
@@ -128,7 +133,8 @@ class Fase:
         pygame.draw.rect(tela,self.bloco_color,self.bloco.rect)
         if self.portal.visible:
             #Desenha o portão quando visível
-            pygame.draw.rect(tela, (5, 200, 50), self.portal.rect)
+            #pygame.draw.rect(tela, (5, 200, 50), self.portal.rect)
+            tela.blit(self.texture_portal, (self.portal.rect.left, self.portal.rect.top))
 
 
     def executar(self, tela):
