@@ -11,12 +11,13 @@ import gerenciador_estados
 pygame.init()
 tela = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption("Wormhole")
+pygame.display.set_icon(pygame.image.load("assets/portal_icon.png"))
 clock = pygame.time.Clock()
 
 # Carrega a trilha sonora
 pygame.mixer.init()
 pygame.mixer.music.load("assets/sounds/soundtrack.mp3")
-pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.set_volume(0.8)
 pygame.mixer.music.play(-1)
 
 # Estados do jogo

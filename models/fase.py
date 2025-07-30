@@ -34,7 +34,7 @@ class Fase:
         #Sprite Portal
         portal_spritesheet_img = pygame.image.load("assets/portal.png").convert_alpha()
         portal_sprite_sheet = spritesheet.SpriteSheet(portal_spritesheet_img)
-        self.texture_portal = portal_sprite_sheet.get_image(0, 32, 32, 2, False)
+        self.texture_portal = portal_sprite_sheet.get_image(1, 32, 32, 3, False)
 
         #Sprite Botão
         botao_spritesheet_img = pygame.image.load("assets/botao.png").convert_alpha()
@@ -45,7 +45,7 @@ class Fase:
         # Inicializa objetos
         self.bloco = body.Body(pygame.rect.Rect(100,100,50,50), 100, 400, 64, 64, self.collision_rects,True)
         self.player = player.Player(self.frame_0, 300, 300, self.collision_rects)
-        self.portal = body.Body(pygame.rect.Rect(100,100,50,70), 1235, 400, 64, 64, [self.player],True)
+        self.portal = body.Body(pygame.rect.Rect(100,100,50,70), 1210, 400, 64, 64, [self.player],True)
         self.botao = body.Body(self.botao_frame_0,100,400, 64,32, [self.player,self.bloco],False)
 
         self.rodando = True
@@ -90,13 +90,11 @@ class Fase:
                 self.rodando = False
                 return "sair"
             if evento.type == pygame.KEYDOWN:
-                if evento.key == pygame.K_SPACE and self.player.no_chao:
+                if (evento.key == pygame.K_SPACE or evento.key == pygame.K_w) and self.player.no_chao:
                     self.player.vel_y = VEL_PULO
                     self.player.no_chao = False
-                if evento.key == pygame.K_j and not self.player.teleportando:
+                if (evento.key == pygame.K_s or evento.key == pygame.K_DOWN)  and not self.player.teleportando:
                     self.player.teleportando = True
-                if evento.key == pygame.K_ESCAPE:
-                    return "menu"
         return None
 
     def atualizar(self):
@@ -125,7 +123,7 @@ class Fase:
             self.player.vel_x = 0
 
     def desenhar(self, tela):
-        tela.blit(self.cenario_fundo, (0,-80))
+        tela.blit(self.cenario_fundo, (0,0))
         messagem = pygame.font.SysFont(None, 48).render(self.message, True, (255, 255, 255))
 
         # Desenhar mapa (igual ao seu código)
