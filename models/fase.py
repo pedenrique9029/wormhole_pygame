@@ -147,6 +147,7 @@ class Fase:
         pygame.draw.rect(tela,self.bloco_color,self.bloco.rect, border_radius=7)
         if self.portal.visible:
             #Desenha o portal quando visível
+            pygame.draw.rect(tela, (255, 255, 0), self.portal.rect)
             tela.blit(self.texture_portal, (self.portal.rect.left, self.portal.rect.top))
 
 

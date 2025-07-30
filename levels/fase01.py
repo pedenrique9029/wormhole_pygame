@@ -19,6 +19,6 @@ class Fase1(Fase):
         # Ajuste de posições iniciais específicas para esta fas
         self.portal.rect.y = 260
         self.player.rect.x = 300
-        self.player.rect.y = 800
+        self.player.rect.y = 560
         self.bloco.rect.x = 200
-        self.bloco.rect.y = 800
+        self.bloco.rect.y = 560
