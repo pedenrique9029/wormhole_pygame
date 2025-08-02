@@ -81,7 +81,7 @@ class Fase:
             if evento.type == pygame.QUIT:
                 return "sair"
             if evento.type == pygame.KEYDOWN:
-                if (evento.key == pygame.K_SPACE or evento.key == pygame.K_w) and self.player.no_chao:
+                if (evento.key == pygame.K_SPACE or evento.key == pygame.K_w or evento.key == pygame.K_UP) and self.player.no_chao:
                     self.player.vel_y = VEL_PULO
                     self.player.no_chao = False
                 if (evento.key == pygame.K_s or evento.key == pygame.K_DOWN)  and not self.player.teleportando:
