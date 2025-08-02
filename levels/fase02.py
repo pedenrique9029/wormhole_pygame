@@ -1,4 +1,3 @@
-import pygame
 from models.fase import Fase
 
 
@@ -11,7 +10,6 @@ class Fase2(Fase):
         self.message = "Ative o portal por meio do botão"
 
         # Ajuste da Paleta de cores
-        self.background_color = (20, 100, 80)
         self.bloco_color = (150, 20, 120)
 
         #Necessário ativar o portal para avançar

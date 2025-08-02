@@ -1,6 +1,5 @@
-import pygame
 from models.body import Body
-from settings import LARGURA, VEL_PULO
+from settings import  VEL_PULO
 
 class Player(Body):
     def __init__(self, texture, x, y, colisores):
@@ -13,14 +12,16 @@ class Player(Body):
 
         if futuro.colliderect(bloco.rect):
             # Verifica se pode empurrar o bloco
-            if dx > 0:
-                if all(not bloco.rect.move(dx, 0).colliderect(c) for c in self.colisores if c != bloco.rect):
-                    bloco.rect.x += dx
-                    self.rect.right = bloco.rect.left
-            elif dx < 0:
-                if all(not bloco.rect.move(dx, 0).colliderect(c) for c in self.colisores if c != bloco.rect):
-                    bloco.rect.x += dx
-                    self.rect.left = bloco.rect.right
+            pode_mover = True
+            
+            for c in self.colisores:
+                if c != bloco.rect:
+                    if bloco.rect.move(dx, 0).colliderect(c):
+                        pode_mover = False
+                        break
+
+            if pode_mover:
+                bloco.rect.x += dx
         else:
             self.vel_x = dx  # Atribui movimento horizontal
 

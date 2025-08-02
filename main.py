@@ -17,7 +17,7 @@ clock = pygame.time.Clock()
 # Carrega a trilha sonora
 pygame.mixer.init()
 pygame.mixer.music.load("assets/sounds/soundtrack.mp3")
-pygame.mixer.music.set_volume(0.8)
+pygame.mixer.music.set_volume(0.0)
 pygame.mixer.music.play(-1)
 
 # Estados do jogo
@@ -30,6 +30,7 @@ gerenciador_estados.estados = {
 }
 rodando = True
 while rodando:
+    # Executa o estado atual
     resultado = gerenciador_estados.estados[gerenciador_estados.estado_atual].executar(tela)
     if resultado=="sair":
         rodando = False

@@ -11,18 +11,14 @@ class Fase:
         self.concluded = False
         self.next_level = "menu"
         self.message =""
-
-        self.cenario_fundo = pygame.image.load(imagem_fundo)
-
+        self.imagem_fundo = pygame.image.load(imagem_fundo)
 
         # Carrega efeito sonoro de teleporte
         self.teleport_sound = pygame.mixer.Sound("assets/sounds/teleport_sound_effect.mp3")
         self.teleport_sound.set_volume(0.3)
 
         #As cores são inicializadas aqui e alteradas em cada subclasse conforme escolhido para cada fase
-        self.background_color = (0, 0, 0)
         self.bloco_color = (255, 255, 255)
-        self.botao_color = (150, 150, 150)
 
         # Sprite Player
         self.background = pygame.rect.Rect(0,0,LARGURA,ALTURA)
@@ -45,26 +41,22 @@ class Fase:
         # Inicializa objetos
         self.bloco = body.Body(pygame.rect.Rect(100,100,50,50), 100, 400, 64, 64, self.collision_rects,True)
         self.player = player.Player(self.frame_0, 300, 300, self.collision_rects)
-        self.portal = body.Body(pygame.rect.Rect(100,100,50,70), 1210, 400, 64, 64, [self.player],True)
+        self.portal = body.Body(self.texture_portal, 1210, 400, 32, 96, [self.player],True)
         self.botao = body.Body(self.botao_frame_0,100,400, 64,32, [self.player,self.bloco],False)
 
-        self.rodando = True
-
     def carregar_colisoes(self):
-        colisoes = []
-        # Mesma lógica de colisão do seu código original
-        for layer in self.tmx_data.visible_layers:
-            if isinstance(layer, pytmx.TiledTileLayer):
-                for x, y, gid in layer:
-                    tile_props = self.tmx_data.get_tile_properties_by_gid(gid)
-                    if tile_props and tile_props.get("collidable", False):
-                        colisoes.append(pygame.Rect(
-                            x * self.tmx_data.tilewidth,
-                            y * self.tmx_data.tileheight,
-                            self.tmx_data.tilewidth,
-                            self.tmx_data.tileheight
-                        ))
-        return colisoes
+        colisores = []
+        # Carrega a colisão com o mapa
+        for x, y, gid in self.tmx_data.get_layer_by_name("ground"):
+            tile_props = self.tmx_data.get_tile_properties_by_gid(gid)
+            if tile_props and tile_props.get("collidable", False):
+                colisores.append(pygame.Rect(
+                    x * self.tmx_data.tilewidth,
+                    y * self.tmx_data.tileheight,
+                    self.tmx_data.tilewidth,
+                    self.tmx_data.tileheight
+                ))
+        return colisores
 
     def processar_eventos(self):
         #O portal tem que estar visível para ser utilizado
@@ -87,7 +79,6 @@ class Fase:
 
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
-                self.rodando = False
                 return "sair"
             if evento.type == pygame.KEYDOWN:
                 if (evento.key == pygame.K_SPACE or evento.key == pygame.K_w) and self.player.no_chao:
@@ -98,7 +89,7 @@ class Fase:
         return None
 
     def atualizar(self):
-        # Movimento horizontal (igual ao seu código)
+        # Movimento horizontal
         teclas = pygame.key.get_pressed()
         if teclas[pygame.K_LEFT] or teclas[pygame.K_a]:
             self.player.texture = self.frame_0_flipado
@@ -112,21 +103,22 @@ class Fase:
         # Teleporte
         if self.player.teleportando:
             self.teleport_sound.play()
-            self.player.rect.left, self.player.rect.top, self.bloco.rect.left, self.bloco.rect.top = self.bloco.rect.left, self.bloco.rect.top, self.player.rect.left, self.player.rect.top
+            self.player.rect.topleft,self.bloco.rect.topleft = self.bloco.rect.topleft, self.player.rect.topleft
             self.player.teleportando = False
 
         # Atualizar física
-        self.player.update_fisica(self.collision_rects + [self.bloco.rect])
-        self.bloco.update_fisica(self.collision_rects + [self.player.rect])
+        self.player.atualizar_fisica(self.collision_rects + [self.bloco.rect])
+        self.bloco.atualizar_fisica(self.collision_rects + [self.player.rect])
 
+        # Se o player tiver empurrando o bloco contra a borda da tela, impede o movimento
         if self.bloco.rect.left == 0 or self.bloco.rect.right == LARGURA:
             self.player.vel_x = 0
 
     def desenhar(self, tela):
-        tela.blit(self.cenario_fundo, (0,0))
+        tela.blit(self.imagem_fundo, (0,0))
         messagem = pygame.font.SysFont(None, 48).render(self.message, True, (255, 255, 255))
 
-        # Desenhar mapa (igual ao seu código)
+        # Desenhar tilemap
         for layer in self.tmx_data.visible_layers:
             if isinstance(layer, pytmx.TiledTileLayer):
                 for x, y, gid in layer:
@@ -147,7 +139,6 @@ class Fase:
         pygame.draw.rect(tela,self.bloco_color,self.bloco.rect, border_radius=7)
         if self.portal.visible:
             #Desenha o portal quando visível
-            pygame.draw.rect(tela, (255, 255, 0), self.portal.rect)
             tela.blit(self.texture_portal, (self.portal.rect.left, self.portal.rect.top))
 
 
@@ -156,7 +147,7 @@ class Fase:
 
         while not self.concluded:
             resultado = self.processar_eventos()
-            if resultado == "menu" or resultado == "sair":
+            if resultado == "sair":
                 return resultado
             elif resultado == "next":
                 return self.next_level

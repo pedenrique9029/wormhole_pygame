@@ -22,8 +22,8 @@ class Menu:
         pygame.draw.rect(tela, (0, 0, 0), self.rect_quit)
         # Opções
         opcoes = [
-            "Start/Resume",
-            "Sair"
+            "Start",
+            "Quit"
         ]
 
         for i, opcao in enumerate(opcoes):

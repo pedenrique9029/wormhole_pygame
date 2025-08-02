@@ -1,4 +1,3 @@
-import pygame
 from models.fase import Fase
 
 
@@ -10,7 +9,6 @@ class Fase3(Fase):
         self.next_level = "fim"
 
         # Ajuste da Paleta de cores
-        self.background_color = (80,50,160)
         self.bloco_color = (200,180,50)
 
         # Necessário ativar o portal para avançar
