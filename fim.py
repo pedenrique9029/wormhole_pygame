@@ -22,6 +22,9 @@ class Fim:
 
     def executar(self, tela):
         clock = pygame.time.Clock()
+        pygame.mixer.music.stop()  # Para a música do jogo
+        musica_final = pygame.mixer.Sound("assets/sounds/victory_sound.mp3").play()  # Toca o som de vitória
+        musica_final.set_volume(0.3)
         while self.rodando:
             resultado = self.processar_eventos()
             if resultado:

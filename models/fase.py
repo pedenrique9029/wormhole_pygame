@@ -15,7 +15,7 @@ class Fase:
 
         # Carrega efeito sonoro de teleporte
         self.teleport_sound = pygame.mixer.Sound("assets/sounds/teleport_sound_effect.mp3")
-        self.teleport_sound.set_volume(0.3)
+        self.teleport_sound.set_volume(0.1)
 
         #As cores são inicializadas aqui e alteradas em cada subclasse conforme escolhido para cada fase
         self.bloco_color = (255, 255, 255)
