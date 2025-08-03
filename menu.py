@@ -22,7 +22,7 @@ class Menu:
         pygame.draw.rect(tela, (0, 0, 0), self.rect_start)
         pygame.draw.rect(tela, (0, 0, 0), self.rect_quit)
 
-        text_start = self.fonte.render("Iniciar", True, (255, 255, 255))
+        text_start = self.fonte.render("Iniciar Jogo", True, (255, 255, 255))
         tela.blit(text_start, (self.largura // 2 - text_start.get_width() // 2, 350))
 
         text_quit = self.fonte_pequena.render("Sair", True, (255, 255, 255))

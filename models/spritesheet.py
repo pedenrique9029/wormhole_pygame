@@ -11,7 +11,7 @@ class SpriteSheet:
         image.blit(
             self.sheet,
             (0, 0),
-            (0,frame*height, width, height)  # Área do spritesheet a ser copiada
+            (frame*width,0, width, height)  # Área do spritesheet a ser copiada
         )
 
         # Aplica escala e flip

@@ -1,11 +1,12 @@
 import pygame
 import pytmx
-from models import spritesheet, player, body
+from models import spritesheet, player, body, portal
 from settings import LARGURA, ALTURA, VEL_PULO, VEL_PLAYER
 
 
 class Fase:
     def __init__(self, arquivo_mapa, imagem_fundo):
+        self.clock = pygame.time.Clock()
         self.tmx_data = pytmx.load_pygame(arquivo_mapa)
         self.collision_rects = self.carregar_colisoes()
         self.concluded = False
@@ -22,15 +23,6 @@ class Fase:
 
         # Sprite Player
         self.background = pygame.rect.Rect(0,0,LARGURA,ALTURA)
-        player_spritesheet_img = pygame.image.load("assets/Virtual Guy/Idle (32x32).png").convert_alpha()
-        player_sprite_sheet = spritesheet.SpriteSheet(player_spritesheet_img)
-        self.frame_0 = player_sprite_sheet.get_image(0, 32, 32, 2, False)
-        self.frame_0_flipado = player_sprite_sheet.get_image(0, 32, 32, 2, True)
-
-        #Sprite Portal
-        portal_spritesheet_img = pygame.image.load("assets/portal.png").convert_alpha()
-        portal_sprite_sheet = spritesheet.SpriteSheet(portal_spritesheet_img)
-        self.texture_portal = portal_sprite_sheet.get_image(1, 32, 32, 3, False)
 
         #Sprite Botão
         botao_spritesheet_img = pygame.image.load("assets/botao.png").convert_alpha()
@@ -40,8 +32,8 @@ class Fase:
 
         # Inicializa objetos
         self.bloco = body.Body(pygame.rect.Rect(100,100,50,50), 100, 400, 64, 64, self.collision_rects,True)
-        self.player = player.Player(self.frame_0, 300, 300, self.collision_rects)
-        self.portal = body.Body(self.texture_portal, 1210, 400, 32, 96, [self.player],True)
+        self.player = player.Player(None, 300, 300, self.collision_rects)
+        self.portal = portal.Portal(None, 1210, 400, [self.player])
         self.botao = body.Body(self.botao_frame_0,100,400, 64,32, [self.player,self.bloco],False)
 
     def carregar_colisoes(self):
@@ -92,10 +84,10 @@ class Fase:
         # Movimento horizontal
         teclas = pygame.key.get_pressed()
         if teclas[pygame.K_LEFT] or teclas[pygame.K_a]:
-            self.player.texture = self.frame_0_flipado
+            self.player.flip = True
             self.player.mover(-VEL_PLAYER, self.bloco)
         elif teclas[pygame.K_RIGHT] or teclas[pygame.K_d]:
-            self.player.texture = self.frame_0
+            self.player.flip = False
             self.player.mover(VEL_PLAYER, self.bloco)
         else:
             self.player.vel_x = 0
@@ -106,7 +98,13 @@ class Fase:
             self.player.rect.topleft,self.bloco.rect.topleft = self.bloco.rect.topleft, self.player.rect.topleft
             self.player.teleportando = False
 
-        # Atualizar física
+        # Atualiza animações
+        dt = self.clock.tick(60)
+        self.portal.animar()
+        self.player.animar()
+        self.player.atualizar_frame(dt)
+
+        # Atualiza física dos objetos
         self.player.atualizar_fisica(self.collision_rects + [self.bloco.rect])
         self.bloco.atualizar_fisica(self.collision_rects + [self.player.rect])
 
@@ -115,32 +113,29 @@ class Fase:
             self.player.vel_x = 0
 
     def desenhar(self, tela):
+        # Desenha fundo
         tela.blit(self.imagem_fundo, (0,0))
-        messagem = pygame.font.SysFont(None, 48).render(self.message, True, (255, 255, 255))
-
         # Desenhar tilemap
-        for layer in self.tmx_data.visible_layers:
-            if isinstance(layer, pytmx.TiledTileLayer):
-                for x, y, gid in layer:
-                    tile = self.tmx_data.get_tile_image_by_gid(gid)
-                    if tile:
-                        tela.blit(tile, (x * self.tmx_data.tilewidth, y * self.tmx_data.tileheight))
+        for x, y, gid in self.tmx_data.get_layer_by_name("ground"):
+            tile = self.tmx_data.get_tile_image_by_gid(gid)
+            if tile:
+                tela.blit(tile, (x * self.tmx_data.tilewidth, y * self.tmx_data.tileheight))
 
     # Desenhar objetos
-        if self.message:
-            #Desenha somente se houver uma messagem
-            tela.blit(messagem, (LARGURA/2-messagem.get_width()/2,100))
         if self.botao.visible:
             #Desenha o botão quando visível
             tela.blit(self.botao.texture, (self.botao.rect.left, self.botao.rect.top))
+        if self.portal.visible:
+            #Desenha o portal quando visível
+            tela.blit(self.portal.texture, (self.portal.rect.left, self.portal.rect.top))
         # Desenha o player
         tela.blit(self.player.texture, (self.player.rect.left, self.player.rect.top))
         #Desenha o Bloco
         pygame.draw.rect(tela,self.bloco_color,self.bloco.rect, border_radius=7)
-        if self.portal.visible:
-            #Desenha o portal quando visível
-            tela.blit(self.texture_portal, (self.portal.rect.left, self.portal.rect.top))
-
+        if self.message:
+            #Desenha somente se houver uma messagem
+            messagem = pygame.font.SysFont(None, 48).render(self.message, True, (255, 255, 255))
+            tela.blit(messagem, (LARGURA/2-messagem.get_width()/2,200))
 
     def executar(self, tela):
         clock = pygame.time.Clock()
