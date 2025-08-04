@@ -16,7 +16,7 @@ class Portal(Body):
 
     def animar(self):
         # Atualiza a animação do portal
-        self.current_frame += 0.15
+        self.current_frame += 0.1
         if self.current_frame >= len(self.frames_spinning):
             self.current_frame = 0
         self.texture = self.frames_spinning[int(self.current_frame)]

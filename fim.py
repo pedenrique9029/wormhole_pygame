@@ -11,7 +11,7 @@ class Fim:
         imagem_fundo = pygame.image.load('assets/imagem_fim_editada.jpg')  # Imagem de fundo
         tela.blit(imagem_fundo, (-170, -100))
 
-        texto = self.fonte.render("Parabéns! Você conseguiu!", True, (255, 255, 255))
+        texto = self.fonte.render("Parabéns! Você conseguiu voltar para casa!", True, (255, 255, 255))
         tela.blit(texto, (self.largura // 2 - texto.get_width() // 2, 300))
 
     def processar_eventos(self):

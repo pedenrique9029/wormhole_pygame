@@ -10,7 +10,7 @@ class Fase2(Fase):
         self.message = "Ative o portal por meio do botão"
 
         # Ajuste da Paleta de cores
-        self.bloco_color = (150, 20, 120)
+        self.bloco_color = (200, 20, 20)
 
         #Necessário ativar o portal para avançar
         self.botao.visible = True

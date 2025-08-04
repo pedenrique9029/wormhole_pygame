@@ -4,6 +4,7 @@ from levels.fase01 import Fase1
 from levels.fase02 import Fase2
 from levels.fase03 import Fase3
 from fim import Fim
+from models.cutscene import Cutscene
 from settings import LARGURA, ALTURA
 import gerenciador_estados
 
@@ -16,13 +17,14 @@ clock = pygame.time.Clock()
 
 # Carrega a trilha sonora
 pygame.mixer.init()
-pygame.mixer.music.load("assets/sounds/soundtrack.mp3")
+pygame.mixer.music.load("assets/sounds/menu_sound.mp3")
 pygame.mixer.music.set_volume(0.3)
 pygame.mixer.music.play(-1)
 
 # Estados do jogo
 gerenciador_estados.estados = {
     "menu": Menu(LARGURA, ALTURA),
+    "cutscene": Cutscene(LARGURA, ALTURA),
     "fase1": Fase1(LARGURA, ALTURA),
     "fase2": Fase2(LARGURA, ALTURA),
     "fase3": Fase3(LARGURA, ALTURA),
