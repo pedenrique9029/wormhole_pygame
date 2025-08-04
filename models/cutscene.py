@@ -7,7 +7,6 @@ class Cutscene:
         self.altura = altura
         self.rodando = True
         self.fonte = pygame.font.Font(None, 32)
-        self.fonte_grande = pygame.font.Font(None, 60)
         self.texto_cutscene = [
             "Você é um cientista realizando experimentos num acelerador de partículas",
             "Quando repentinamente...",
@@ -28,7 +27,6 @@ class Cutscene:
         for frase in self.texto_cutscene:
             self.desenhar(tela, frase)
             resultado = self.atualizar()
-            tela.fill((0, 0, 0))
             if resultado == "sair":
                 return "sair"
             
@@ -53,8 +51,6 @@ class Cutscene:
             tela.blit(texto_surface, (self.largura // 2 - texto_surface.get_width() // 2, self.altura // 2))
 
             pygame.display.flip()
-            pygame.event.pump()
-            pygame.time.delay(30)
 
     def atualizar(self):
         esperando = True

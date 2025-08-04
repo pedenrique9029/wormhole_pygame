@@ -62,11 +62,9 @@ class Fase:
                 self.botao.texture = self.botao_frame_clickado
                 # Torna o portal visivel caso não esteja
                 if not self.portal.visible:
-                    self.botao_color = (0,255,50)
                     self.portal.visible = True
             else:
                 self.botao.texture = self.botao_frame_0
-                self.botao_color = (150,150,150)
                 self.portal.visible = False
 
         for evento in pygame.event.get():

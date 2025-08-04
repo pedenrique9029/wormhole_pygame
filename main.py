@@ -18,7 +18,7 @@ clock = pygame.time.Clock()
 # Carrega a trilha sonora
 pygame.mixer.init()
 pygame.mixer.music.load("assets/sounds/menu_sound.mp3")
-pygame.mixer.music.set_volume(0.3)
+pygame.mixer.music.set_volume(0.75)
 pygame.mixer.music.play(-1)
 
 # Estados do jogo

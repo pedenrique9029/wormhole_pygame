@@ -91,7 +91,7 @@ class Player(Body):
         if self.no_chao:
             self.vel_y = VEL_PULO
             self.no_chao = False
-            # Ajuste para evitar grudar em paredes/blocos
+            # Ajuste para evitar grudar no bloco
             if abs(self.rect.right - bloco.rect.left) < 5:  # Se estiver muito perto à direita
                 self.rect.right = bloco.rect.left - 1
             elif abs(self.rect.left - bloco.rect.right) < 5:  # Se estiver muito perto à esquerda
