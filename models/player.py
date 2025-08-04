@@ -9,40 +9,21 @@ class Player(Body):
         self.teleportando = False
         self.rect = pygame.Rect(0, 0, 64, 64) 
         self.flip = False
-        # Carrega o spritesheet da animação Idle
-        sprite_sheet_idle = SpriteSheet(pygame.image.load("assets\Virtual Guy\Idle (32x32).png"))
+        
         # Animação Idle
-        self.frames_idle = []
-        for i in range(sprite_sheet_idle.sheet.get_width() // 32):
-            self.frames_idle.append(sprite_sheet_idle.get_image(i,32,32,2,False))
-        # Animação Idle Flipada
-        self.frames_idle_flip = []
-        for i in range(sprite_sheet_idle.sheet.get_width() // 32):
-            self.frames_idle_flip.append(sprite_sheet_idle.get_image(i,32,32,2,True))
+        self.frames_idle = self.create_animation("assets/Virtual Guy/Idle (32x32).png", False)
+        self.frames_idle_flip = self.create_animation("assets/Virtual Guy/Idle (32x32).png", True)
 
-        # Carrega o spritesheet da animação Run
-        sprite_sheet_run = SpriteSheet(pygame.image.load("assets\Virtual Guy\Run (32x32).png"))
         # Animação Run
-        self.frames_run = []
-        for i in range(sprite_sheet_run.sheet.get_width() // 32):
-            self.frames_run.append(sprite_sheet_run.get_image(i,32,32,2,False))
-        # Animação Run Flipada
-        self.frames_run_flip = []
-        for i in range(sprite_sheet_run.sheet.get_width() // 32):
-            self.frames_run_flip.append(sprite_sheet_run.get_image(i,32,32,2,True))
+        self.frames_run = self.create_animation("assets/Virtual Guy/Run (32x32).png", False)
+        self.frames_run_flip = self.create_animation("assets/Virtual Guy/Run (32x32).png", True)
 
-        # Carrega o spritesheet da animação Jump
-        sprite_sheet_jump = SpriteSheet(pygame.image.load("assets\Virtual Guy\Jump (32x32).png"))
         # Animação Jump
-        self.frames_jump = []
-        for i in range(sprite_sheet_jump.sheet.get_width() // 32):
-            self.frames_jump.append(sprite_sheet_jump.get_image(i,32,32,2,False))
-        # Animação Jump Flipada
-        self.frames_jump_flip = []
-        for i in range(sprite_sheet_jump.sheet.get_width() // 32):
-            self.frames_jump_flip.append(sprite_sheet_jump.get_image(i,32,32,2,True))
+        self.frames_jump = self.create_animation("assets/Virtual Guy/Jump (32x32).png", False)
+        self.frames_jump_flip = self.create_animation("assets/Virtual Guy/Jump (32x32).png", True)
+
         # Animação Fall
-        sprite_sheet_fall = SpriteSheet(pygame.image.load("assets\Virtual Guy\Fall (32x32).png"))
+        sprite_sheet_fall = SpriteSheet(pygame.image.load("assets/Virtual Guy/Fall (32x32).png"))
         self.frame_fall = sprite_sheet_fall.get_image(0, 32, 32, 2, False)
         self.frame_fall_flip = sprite_sheet_fall.get_image(0, 32, 32, 2, True)
 
@@ -115,3 +96,11 @@ class Player(Body):
                 self.rect.right = bloco.rect.left - 1
             elif abs(self.rect.left - bloco.rect.right) < 5:  # Se estiver muito perto à esquerda
                 self.rect.left = bloco.rect.right + 1
+
+    def create_animation(self, path, flip):
+        sprite_sheet = SpriteSheet(pygame.image.load(path))
+        frames = []
+        num_frames = sprite_sheet.sheet.get_width() // 32
+        for i in range(num_frames):
+            frames.append(sprite_sheet.get_image(i, 32, 32, 2, flip))
+        return frames
