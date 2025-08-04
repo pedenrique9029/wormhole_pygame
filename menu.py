@@ -32,6 +32,9 @@ class Menu:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 return "sair"
+            elif evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_RETURN:
+                    return "cutscene"
             elif evento.type == pygame.MOUSEBUTTONDOWN:
                 click_x, click_y = evento.pos
                 if (self.rect_start.left < click_x < self.rect_start.right) and (self.rect_start.top < click_y < self.rect_start.bottom):
